@@ -265,22 +265,22 @@ class GSV(TalkerSentence):
 
 class HCD(TalkerSentence):
     fields = (
-		("Day", "day", Decimal),
-		("Month", "month", Decimal),
-		("Year", "year", Decimal),
-		("UTC time", "timestamp",timestamp_nofill),
+        ("Day", "day", Decimal),
+        ("Month", "month", Decimal),
+        ("Year", "year", Decimal),
+        ("UTC time", "timestamp",timestamp_nofill),
         ("Heading", "heading", float),
         ("Pitch", "pitch", float),
         ("Reserved", "res"),
         ("Speed over ground", "variation", float),
         ("Latitude", "lat", ddmm_to_sd),
-		("Longitude", "lon", ddmm_to_sd),
-		("Alt", "alt", float),
-		("X", "x", float),
-		("Y", "y", float),
-		("Z", "z", float),
-		("QF", "qfz", int),
-		("Sat No", "sat", int),
+        ("Longitude", "lon", ddmm_to_sd),
+        ("Alt", "alt", float),
+        ("X", "x", float),
+        ("Y", "y", float),
+        ("Z", "z", float),
+        ("QF", "qfz", int),
+        ("Sat No", "sat", int),
     )
     @property
     def datestamp(self):
