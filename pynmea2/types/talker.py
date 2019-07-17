@@ -263,6 +263,34 @@ class GSV(TalkerSentence):
     )  # 00-99 dB
 
 
+class HCD(TalkerSentence):
+    fields = (
+		("Day", "day", Decimal),
+		("Month", "month", Decimal),
+		("Year", "year", Decimal),
+		("UTC time", "timestamp",timestamp_nofill),
+        ("Heading", "heading", float),
+        ("Pitch", "pitch", float),
+        ("Reserved", "res"),
+        ("Speed over ground", "variation", float),
+        ("Latitude", "lat", ddmm_to_sd),
+		("Longitude", "lon", ddmm_to_sd),
+		("Alt", "alt", float),
+		("X", "x", float),
+		("Y", "y", float),
+		("Z", "z", float),
+		("QF", "qfz", int),
+		("Sat No", "sat", int),
+    )
+    @property
+    def datestamp(self):
+        return datetime.date(year=self.year, month=self.month, day=self.day)
+
+    @property
+    def datetime(self):
+        d = datetime.datetime.combine(self.datestamp, self.timestamp)
+        return d
+
 class HDG(TalkerSentence):
     """ NMEA 0183 standard Heading, Deviation and Variation
         Format: $HCHDG,<1>,<2>,<3>,<4>,<5>*hh<CR><LF>

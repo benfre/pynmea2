@@ -16,6 +16,20 @@ def timestamp(s):
         microsecond=ms)
     return t
 
+def timestamp_nofill(s):
+    '''
+    Converts a timestamp given in "hmmss[.ss]" or "hmmss[.ss]" ASCII text format to a
+    datetime.time object
+    '''
+    hms, ms = re.match(r'^(\d+)(\.\d+)$', s).groups()
+    if len(hms) ==5:
+        hms = "0" + hms
+    t = datetime.time(
+        hour=int(hms[0:2]),
+        minute=int(hms[2:4]),
+        second=int(hms[4:6]),
+        microsecond=int(float(ms)*1000000))
+    return t
 
 def datestamp(s):
     '''
@@ -38,6 +52,18 @@ def dm_to_sd(dm):
     d, m = re.match(r'^(\d+)(\d\d\.\d+)$', dm).groups()
     return float(d) + float(m) / 60
 
+def ddmm_to_sd(dm):
+    '''
+    Converts a geographic co-ordinate given in "degrees/minutes" dd.mmmmmm
+    format (eg, "123.19943281" = 123 degrees, 19.943281 minutes) to a signed
+    decimal (python float) format
+    '''
+    # '123.19943281'
+    if not dm or dm == '0':
+        return 0.
+    d, m = re.match(r'^(\d+)\.(\d+)$', dm).groups()
+    m = "0." + m
+    return float(d) + float(m)*100 / 60
 
 class LatLonFix(object):
     '''Mixin to add `latitude` and `longitude` properties as signed decimals
