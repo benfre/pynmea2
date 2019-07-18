@@ -263,7 +263,25 @@ class GSV(TalkerSentence):
     )  # 00-99 dB
 
 
-class HCD(TalkerSentence):
+class HCD(TalkerSentence, ValidGGAFix):
+    """ This is not the HCD obsolete NMEA sentence, do not use as it is. 
+        This is output sentence from P3-DT (Shanghai Huace Navigation Technology LTD), a GNSS receiver.
+        This should be a proprietary sentence, but the manufacturer did not start the sentence type with P. 
+        It will only work if derived from TalkerSentence class.
+        Format: $GPHCD,<1>,<2>,<3>,<4>,<5>,<6>,<7>,<8>,<9>,<10>,<11>,<12>,<13>,<14>,<15>,<15>*hh<CR><LF>
+    <1>,<2>,<3> day, month and year (property datestamp)
+    <4> Timestamp (UTC), but no filling 0 if hour is less than 10.
+    <5> Heading, from RTK dual antenna, degrees.
+    <6> Pitch, from RTK dual antenna, degree.
+    <7> Reserved, always 0.00
+    <8> Speed over ground, VTG, km/h.
+    <9> Latitude, special format: dd.mmmmmmm, use ddmm_to_sd convert to degree.
+    <10> Longitude, special format: dd.mmmmmmm, use ddmm_to_sd convert to degree.
+    <11> Altitude, meters.
+    <12>,<13>,<14> X, Y, Z of local coordinate, (use projection and reference in receiver).
+    <15> GPS Quality: 0-5, same as in GGA.
+    <16> Number of Satellites.
+    """
     fields = (
         ("Day", "day", Decimal),
         ("Month", "month", Decimal),
@@ -279,8 +297,8 @@ class HCD(TalkerSentence):
         ("X", "x", float),
         ("Y", "y", float),
         ("Z", "z", float),
-        ("QF", "qfz", int),
-        ("Sat No", "sat", int),
+        ('GPS Quality Indicator', 'gps_qual', int),
+        ('Number of Satellites in use', 'num_sats', int),
     )
     @property
     def datestamp(self):
